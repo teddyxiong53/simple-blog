@@ -6,8 +6,8 @@ var logger = require('morgan');
 var session = require('express-session')
 var router = require('./routes/index');
 var flash = require('connect-flash')
-var bodyParse = require('body-parser');
 
+var FileStore = require('session-file-store')(session);
 var app = express();
 
 // view engine setup
@@ -22,9 +22,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
+  name: "simple-blog",
   secret: "123456",
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    maxAge: 3600*10
+  },
+  store: new FileStore()
 }));
 app.use(flash())
 
@@ -35,7 +40,8 @@ app.locals.blog = {
 }
 // 添加模板需要的变量
 app.use(function(req, res, next) {
-  res.locals.user = req.session.user
+  console.log(`111 ${JSON.stringify(req.session)}`)
+  // res.locals.user = req.session.user
   res.locals.success = req.flash('success').toString()
   res.locals.error = req.flash('error').toString()
   next()

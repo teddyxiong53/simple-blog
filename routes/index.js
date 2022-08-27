@@ -11,19 +11,26 @@ var sha1 = function(password) {
 router.get('/', function(req, res, next) {
   // read data from db
   dataModel.readTable('posts', function(data) {
-    console.log(data)
-    res.render('index', { data: data, mainType: 'posts' });
+    // console.log(data)
+    // 
+    // console.log(req.session.user.username)
+    res.render('index', { params: {
+      mainType: 'posts',
+      user: req.session.user,
+      data: data
+    } });
   })
   
 });
-router.post('/', function(req, res,next) {
-  console.log("xxxxxxxxxxxxx")
-  res.render('index', {mainType: 'signup', data: null})
-})
+
 router.get('/signup', check.checkNotLogin, function(req, res, next) {
   //要注册，首先要当前不是登陆状态。
   //怎么判断当前的登陆状态？就用check这个自定义的中间件
-  res.render('index', {mainType: 'signup', data: null})
+  res.render('index', { params: {
+    mainType: 'signup',
+    user: null,
+    data: null
+  } })
 })
 router.post('/signup', function(req, res, next) {
   // 从post数据里拿到username，password、email。
@@ -55,20 +62,22 @@ router.post('/signup', function(req, res, next) {
     avatar: ""
   }, function() {
     console.log("insert finish")
-    res.redirect('signin')
+    res.redirect('/signin')
   })
   
 })
 router.get('/signin', check.checkNotLogin, function(req, res, next) {
   // 先判断当前是不是已经登陆的状态。
-  res.render('index', {mainType: 'signin', data: null})
+  res.render('index', { params: {
+    mainType: 'signin',
+    user: null,
+    data: null
+  } })
 })
 
 router.post('/signin', function(req, res, next) {
   let username = req.body.username
   let password = req.body.password
-
-
   try {
     //从数据库查询用户。
     //名字和密码都匹配
@@ -80,7 +89,9 @@ router.post('/signin', function(req, res, next) {
         if (usernameDb === username) {
           if (sha1(password) === passwordDb) {
             //用户名和密码都对
-            res.redirect('/')
+            
+            // req.flash('success', 'test flash')
+            // console.log(`222 ${JSON.stringify(req.session)}`)
           } else {
             throw new Error("密码错误")
           }
@@ -92,9 +103,14 @@ router.post('/signin', function(req, res, next) {
       }
     })
   } catch(e) {
-    res.flash('error', e.message)
+    req.flash('error', e.message)
     res.redirect('/signin')
+    return
   }
+  req.session.user = {
+    username,
+  }
+  res.redirect('/')
 })
 
 module.exports = router;

@@ -15,7 +15,8 @@
                 </tr>
             </thead>
             <tbody>
-                <% data.forEach(function(post) { %>
+                <% if (params.data) { %>
+                <% params.data.forEach(function(post) { %>
                 <tr>
                     <td>
                         <%= post.title %>
@@ -29,6 +30,7 @@
                     
                 </tr>
                 <% }); %>
+                <% } %>
             </tbody>
         </table>
     </div>
