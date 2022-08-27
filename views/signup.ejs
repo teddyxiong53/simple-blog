@@ -1,17 +1,17 @@
 <div class="col-md-8 column">
-    <form role="form">
+    <form role="form" id="signupForm">
         <div class="form-group">
-            <label for="usernameInput">用户名</label>
+            <label for="usernameInput">用户名（最短3个字母）</label>
             <input class="form-control" id="usernameInput"
-                type="text" />
+                type="text" required minlength="3"/>
         </div>
         <div class="form-group">
-            <label for="userEmailInput">邮箱</label>
+            <label for="userEmailInput">邮箱（必需）</label>
             <input class="form-control" id="userEmailInput"
-                type="email" />
+                type="email" required/>
         </div>
         <div class="form-group">
-            <label for="userPasswordInput">密码</label>
+            <label for="userPasswordInput">密码（不能为空）</label>
             <input class="form-control" id="userPasswordInput"
                 type="password" />
         </div>
@@ -26,3 +26,30 @@
         <button type="submit" class="btn btn-default">注册</button>
     </form>
 </div>
+<script>
+    $(document).ready(function() {
+        $("#signupForm").validate({
+            rules: {
+                userPasswordInput: {
+                    required: true,
+                    minlength: 5
+                },
+                userPasswordInput2: {
+                    required: true,
+                    minlength: 5,
+                    equalTo: "#userPasswordInput"
+                }
+            },
+            messages: {
+                userPasswordInput: {
+                    required: '密码不能为空',
+                    minlength: '密码长度不能少于6个字符'
+                },
+                userPasswordInput2: {
+                    required: '密码不能为空',
+                    minlength: '密码长度不能少于6个字符',
+                }
+            }
+        })
+    })
+</script>
