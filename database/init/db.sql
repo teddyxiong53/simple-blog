@@ -6,9 +6,9 @@
 drop table if EXISTS users;
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY ,
-  username TEXT DEFAULT "",
+  username TEXT unique ,
   password TEXT DEFAULT "",
-  email INTEGER DEFAULT 0,
+  email TEXT DEFAULT "",
   avatar TEXT DEFAULT "",
   signupTime TIMESTAMP default (datetime('now', 'localtime'))
 );
@@ -20,7 +20,7 @@ VALUES
   (2, "xhl", "123456", "teddyxiong53@sina.com", "222");
 
 -- posts --
-drop table if EXISTS post;
+drop table if EXISTS posts;
 CREATE TABLE IF NOT EXISTS posts (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT DEFAULT "",

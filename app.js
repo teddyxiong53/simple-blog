@@ -28,12 +28,6 @@ app.use(session({
 }));
 app.use(flash())
 
-// debug post
-// app.use(function (req, res) {
-//   res.setHeader('Content-Type', 'text/plain')
-//   res.write('you posted:\n')
-//   res.end(JSON.stringify(req.body, null, 2))
-// })
 
 // 添加全局变量
 app.locals.blog = {
