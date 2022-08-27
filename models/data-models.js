@@ -45,6 +45,14 @@ INSERT INTO users
   ( username, password, email, avatar) 
 VALUES 
   ("teddyxiong53", "123456", "1073167306@qq.com", "111"),
+
+
+对于posts表
+insertRow('posts', {title: 'aa', content: 'aa', userId: 1})
+sql
+insert into posts (title, content, userId) values
+("aa", "aa", 1)
+
 */
 function insertRow (table, row, cb) {
     let sql = ''
@@ -53,7 +61,9 @@ function insertRow (table, row, cb) {
         values ("${row.username}", "${row.password}", "${row.email}", "${row.avatar}")`
         db.run(sql, cb)
     } else if (table === 'posts') {
-
+        sql = `insert into posts (title, content, userId) \
+        values ("${row.title}", "${row.content}", ${row.userId})`
+        db.run(sql, cb)
     }
 }
 /*
@@ -63,7 +73,7 @@ select name from users where name = xx limit 1
 function queryRow(table, row, cb) {
     let sql = ''
     if (table === 'users') {
-        sql = `select username, password from users where username = "${row.username}" limit 1`
+        sql = `select username, password, id from users where username = "${row.username}" limit 1`
         // db.run(sql, cb)
         console.log(sql)
         db.all(sql, [], function(err, rows) {

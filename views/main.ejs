@@ -1,10 +1,12 @@
 <%- include('notification.ejs'); %>
 <% if (params.mainType === 'posts') { %>
-    <%- include('posts.ejs', {params}); %>
+<%- include('posts.ejs', {params}); %>
 <% } else if (params.mainType === 'signup') { %>
-    <%- include('signup.ejs', {params}); %>
+<%- include('signup.ejs', {params}); %>
 <% } else if (params.mainType === 'signin') { %>
-    <%- include('signin.ejs', {params}); %>
+<%- include('signin.ejs', {params}); %>
+<% } else if (params.mainType === 'write') { %>
+<%- include('write.ejs', {params}); %>
 <% } else  { %>
-    <%- include('posts.ejs', {params}); %>
+<%- include('posts.ejs', {params}); %>
 <% } %>

@@ -78,39 +78,71 @@ router.get('/signin', check.checkNotLogin, function(req, res, next) {
 router.post('/signin', function(req, res, next) {
   let username = req.body.username
   let password = req.body.password
-  try {
+  let usreId = 0
     //从数据库查询用户。
     //名字和密码都匹配
     // 先找用户
     dataModel.queryRow('users', {username}, function(rows) {
-      if (rows.length >= 1) {
-        let usernameDb = rows[0].username
-        let passwordDb = rows[0].password
-        if (usernameDb === username) {
-          if (sha1(password) === passwordDb) {
-            //用户名和密码都对
-            
-            // req.flash('success', 'test flash')
-            // console.log(`222 ${JSON.stringify(req.session)}`)
+      try {
+        if (rows.length >= 1) {
+          let usernameDb = rows[0].username
+          let passwordDb = rows[0].password
+          if (usernameDb === username) {
+            if (sha1(password) === passwordDb) {
+              //用户名和密码都对
+            } else {
+              throw new Error("密码错误")
+            }
           } else {
-            throw new Error("密码错误")
+            throw new Error("用户名不存在")
           }
         } else {
           throw new Error("用户名不存在")
         }
-      } else {
-        throw new Error("用户名不存在")
+        userId = rows[0].id
+        req.session.user = {
+          username,
+          userId
+        }
+        res.redirect('/')
+      } catch(e) {
+        req.flash('error', e.message)
+        res.redirect('/signin')
+        return
       }
     })
+})
+router.get('/write', function(req, res, next) {
+  res.render('index', {params: {
+    data: null,
+    user: req.session.user,
+    mainType: 'write'
+  }})
+})
+router.post('/write', function(req, res, next) {
+  // console.log('post ok')
+  let title = req.body.title
+  let content = req.body.content
+  try {
+    if (title.length < 2) {
+      throw new Error('标题太短了')
+    } else if (content.length < 2) {
+      throw new Error('内容太短了')
+    }
   } catch(e) {
     req.flash('error', e.message)
-    res.redirect('/signin')
-    return
+    res.redirect('back')
+    return 
   }
-  req.session.user = {
-    username,
-  }
-  res.redirect('/')
+  dataModel.insertRow('posts', {
+    title,
+    content,
+    userId: req.session.user.userId
+  },function() {
+    console.log('post ok')
+    res.redirect('/')
+  } )
+  
+  
 })
-
 module.exports = router;
