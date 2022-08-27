@@ -137,6 +137,7 @@ router.post('/write', function(req, res, next) {
   dataModel.insertRow('posts', {
     title,
     content,
+    username: req.session.user.username,
     userId: req.session.user.userId
   },function() {
     console.log('post ok')

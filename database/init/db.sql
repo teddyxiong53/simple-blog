@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS posts (
     title TEXT DEFAULT "",
   content TEXT DEFAULT "",
   createTime TIMESTAMP default (datetime('now', 'localtime')),
+  username TEXT DEFAULT "",
   userId INTEGER, 
   CONSTRAINT fk_users 
   FOREIGN KEY(userId) 
@@ -33,7 +34,7 @@ CREATE TABLE IF NOT EXISTS posts (
 );
 
 INSERT INTO posts
-  (title, content, userId) 
+  (title, content, username, userId) 
 VALUES 
-  ("first post", "this is first post", 1),
-  ("second post", "this is second post", 2);
+  ("first post", "this is first post", "teddyxiong53", 1),
+  ("second post", "this is second post", "xhl", 2);
