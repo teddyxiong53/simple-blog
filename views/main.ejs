@@ -1,9 +1,9 @@
 <% if (mainType === 'posts') { %>
-<%- include('posts.ejs'); %>
+    <%- include('posts.ejs', {data:data}); %>
 <% } else if (mainType === 'signup') { %>
-    signup
+    <%- include('signup.ejs'); %>
 <% } else if (mainType === 'signin') { %>
-    signin
+    <%- include('signin.ejs'); %>
 <% } else  { %>
-    页面不存在
+    <%- include('posts.ejs'); %>
 <% } %>
