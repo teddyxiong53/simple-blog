@@ -6,6 +6,7 @@ var logger = require('morgan');
 var session = require('express-session')
 var router = require('./routes/index');
 var flash = require('connect-flash')
+var bodyParse = require('body-parser');
 
 var app = express();
 
@@ -17,6 +18,7 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
@@ -25,6 +27,13 @@ app.use(session({
   saveUninitialized: false,
 }));
 app.use(flash())
+
+// debug post
+// app.use(function (req, res) {
+//   res.setHeader('Content-Type', 'text/plain')
+//   res.write('you posted:\n')
+//   res.end(JSON.stringify(req.body, null, 2))
+// })
 
 // 添加全局变量
 app.locals.blog = {
