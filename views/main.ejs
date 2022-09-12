@@ -7,6 +7,8 @@
 <%- include('signin.ejs', {params}); %>
 <% } else if (params.mainType === 'write') { %>
 <%- include('write.ejs', {params}); %>
+<% } else if (params.mainType === 'post') { %>
+<%- include('post.ejs', {params}); %>
 <% } else  { %>
 <%- include('posts.ejs', {params}); %>
 <% } %>

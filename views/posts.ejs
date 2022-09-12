@@ -19,7 +19,8 @@
                 <% params.data.forEach(function(post) { %>
                 <tr>
                     <td>
-                        <%= post.title %>
+                        <a href="/post/<%= post.id %>"><%= post.title %></a>
+                        
                     </td>
                     <td>
                         <%= post.username %>

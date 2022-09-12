@@ -84,6 +84,15 @@ function queryRow(table, row, cb) {
             // console.log(rows)
             cb(rows)
         })
+    } else if (table === 'posts') {
+        sql = `select id, title, content from posts where id = ${row.id}`
+        db.all(sql, [], function(err, rows) {
+            if (err) {
+                console.log('select err', err)
+                throw err
+            }
+            cb(rows)
+        })
     }
 }
 function updateRow (table, rb, cb) {

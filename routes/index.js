@@ -143,7 +143,24 @@ router.post('/write', function(req, res, next) {
     console.log('post ok')
     res.redirect('/')
   } )
-  
-  
+})
+
+router.get('/post/:id', function(req, res, next) {
+  let id = req.params.id
+  try {
+    dataModel.queryRow('posts', {id}, function(rows) {
+      let data = rows[0]
+      res.render('index', {params: {
+        user: req.session.user,
+        data,
+        mainType: 'post'
+      }
+      })
+      
+    })
+  } catch (e) {
+    req.flash('error', '文章id错误')
+    res.redirect('/')
+  }
 })
 module.exports = router;
